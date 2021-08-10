@@ -1,6 +1,10 @@
 <?php
 
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\ExecutiveController;
+use App\Http\Controllers\UserController;
+use App\Http\Controllers\PermissionController;
+use App\Http\Controllers\PlaceController;
 use App\Models\User;
 use App\Models\UserModel;
 use Illuminate\Http\Request;
@@ -14,13 +18,10 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 //$userModel=User::query(); neden global tanimlayamiyorum
 
 
-Route::middleware('auth:sanctum')->get('/id/{id_number}', function ($id_number) {
-    //  $userModel = new UserModel();
-    /*return DB::table('user_data')->  //Query Builder ile yazilmis hali
-    where('id_number', $id_number)->first();*/
-    return User::query()->where('id_number', $id_number)->
-    first(['first_name', 'id_number', 'last_name', 'user_photo_path']);
-});
+Route::middleware('auth:sanctum')->post('/id/{id_number}', [UserController::class, 'isPermitted']);
+Route::post('/setPermission', [PermissionController::class, 'setPermission']);
+Route::post('/setPlace', [PlaceController::class, 'setPlaces']);
+Route::post('/setExecutive', [ExecutiveController::class, 'setExecutive']);
 
 Route::get('/users', function ($id_number) {
     return User::all();//tum veriyi almak icin
@@ -31,13 +32,19 @@ Route::post('/tokens/create', function () {
     $token = $user->createToken($user->email);
     return ['token' => $token->plainTextToken];
 });
-Route::post('/auth/register', [AuthController::class, 'register']);
 
-Route::post('/auth/login', [AuthController::class, 'login']);
+Route::post('/register', [AuthController::class, 'register']);
 
-Route::middleware('auth:sanctum')->get('/id/{id_number}', function (Request $request) {
+Route::post('/login', [AuthController::class, 'login']);
+
+Route::middleware('auth:sanctum')->post('/logout', [AuthController::class, 'logout']);
+
+Route::middleware('auth:sanctum')->post('/me', [AuthController::class, 'me']);
+
+/*Route::middleware('auth:sanctum')->get('/id/{id_number}', function (Request $request) {
     return auth()->user();
-});
+});*/
+
 
 
 

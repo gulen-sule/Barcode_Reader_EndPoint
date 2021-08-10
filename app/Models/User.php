@@ -2,8 +2,8 @@
 
 namespace App\Models;
 
-use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
@@ -12,15 +12,20 @@ class User extends Authenticatable
 {
     use HasFactory, Notifiable, HasApiTokens;
 
-    public $timestamps = false;
     /**
      * The attributes that are mass assignable.
      *
      * @var array
      */
     protected $fillable = [
-        'name',
+        'first_name',
+        'last_name',
+        'id_number',
+        'uuid',
+        'role',
+        'user_photo_path',
         'email',
+        'remember_token',
         'password',
     ];
 
@@ -42,6 +47,23 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+    /*public function permissions(): BelongsTo
+    {
+        return $this->belongsTo(Permission::class);
+    }*/
+    /*public function createToken(string $name, string $tokenable_type, BigInteger $tokenable_id , array $abilities = ['*']): NewAccessToken
+    {
+        $token = $this->tokens()->create([
+            'name' => $name,
+            'tokenable_id' => $tokenable_id,
+            'tokenable_type' => $tokenable_type,
+            'token' => hash('sha256', $plainTextToken = Str::random(40)),
+            'abilities' => $abilities,
+        ]);
+
+        return new NewAccessToken($token, $token->getKey() . '|' . $plainTextToken);
+    }*/
 
 
 }
