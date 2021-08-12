@@ -1,6 +1,9 @@
 <?php
 
+use App\Http\Controllers\AuthController;
 use App\Models\User;
+use http\Client\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -58,7 +61,11 @@ Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name
 
 
 
-Route::get('/id/{id_number}', function ($id_number) {
+Route::middleware('auth:sanctum')->get('/id/{id_number}', function ($id_number) {
+     /*$userModel = new UserModel();
+    return DB::table('user_data')->  //Query Builder ile yazilmis hali
+    where('id_number', $id_number)->first();*/
+
     return User::query()->where('id_number', $id_number)->
     first(['first_name', 'id_number', 'last_name', 'user_photo_path']);
 });

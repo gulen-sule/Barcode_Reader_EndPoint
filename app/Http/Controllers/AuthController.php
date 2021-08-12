@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\BarcodeToken;
 use App\Models\User;
 use App\Traits\ApiResponser;
 use Faker\Provider\Uuid;
@@ -37,11 +36,6 @@ class AuthController extends Controller
                 'password' => Hash::make($attribute['password']),
                 'email' => $attribute['email']]);
 
-        $user_id = $user::query()->where('email', $attribute['email'])->value('id');
-        BarcodeToken::query()->create([
-            'user_id' => $user_id,
-            'barcode_token' => Uuid::uuid()
-        ]);
         /*$user::query()->insert(['first_name' => $attribute['user_name'],
              'password' => Hash::make($attribute['password']),
              'email' => $attribute['email']]);// insert sadece bir tane giris yapilacaksa kullanilir
@@ -81,11 +75,6 @@ class AuthController extends Controller
     public function me(Request $request)
     {
         return $request->user();
-    }
-
-    public function role(Request $request)
-    {
-        return $request->user()->role;
     }
 
     public function logout(Request $request)

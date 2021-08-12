@@ -6,7 +6,6 @@
     "license": "MIT",
     "require": {
         "php": "^7.3|^8.0",
-        "ext-mongodb": "*",
         "fideloper/proxy": "^4.4",
         "fruitcake/laravel-cors": "^2.0",
         "guzzlehttp/guzzle": "^7.3",
@@ -14,8 +13,7 @@
         "laravel/sanctum": "^2.11",
         "laravel/tinker": "^2.5",
         "laravel/ui": "^3.3",
-        "tymon/jwt-auth": "^1.0",
-        "web-token/jwt-framework": "^2.2"
+      "ext-mongodb": "*"
     },
     "require-dev": {
         "facade/ignition": "^2.5",
