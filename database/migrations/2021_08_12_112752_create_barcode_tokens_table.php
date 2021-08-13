@@ -18,7 +18,9 @@ class CreateBarcodeTokensTable extends Migration
             $table->timestamps();
             $table->integer('user_id');
             $table->foreign('user_id')->references('id')->on('users');
-            $table->string('barcode_token',60);
+            $table->string('barcode_token', 60);
+            $table->integer('expire_time')->nullable(true);
+            $table->integer('valid_time')->nullable(true);
         });
     }
 

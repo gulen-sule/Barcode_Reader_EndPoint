@@ -78,15 +78,18 @@ class AuthController extends Controller
         }
     }
 
+
     public function me(Request $request)
     {
         return $request->user();
     }
 
+
     public function role(Request $request)
     {
         return $request->user()->role;
     }
+
 
     public function logout(Request $request)
     {
@@ -95,6 +98,7 @@ class AuthController extends Controller
 
         return response($response, 200);
     }
+
 
     public function deleteUser(Request $request)
     {
