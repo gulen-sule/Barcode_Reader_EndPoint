@@ -53,3 +53,13 @@ $response = tap($kernel->handle(
 ))->send();
 
 $kernel->terminate($request, $response);
+/**
+ * Dump the passed variables and end the script.
+ *
+ * @param  mixed  $args
+ * @return void
+ */
+
+
+
+

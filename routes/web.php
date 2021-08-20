@@ -1,5 +1,8 @@
 <?php
 
+use App\Http\Controllers\AdminController;
+use App\Http\Controllers\AuthController;
+use App\Http\Controllers\BarcodeQueryController;
 use App\Models\User;
 use Illuminate\Support\Facades\Route;
 
@@ -20,10 +23,6 @@ Route::get('/', function () {
 Route::get('/all', function () {
     return \Illuminate\Support\Facades\DB::table('users')->get('*');
 });
-/*Route::get('/uuid/{uuid}', function ($uuid) {
-    return \Illuminate\Support\Facades\DB::table('users')->where('uuid', $uuid)->get('*');
-
-});*/
 Route::prefix('/userdata')->group(function () {
     Route::get('/getdata', function () {
         $x = User::all()->sortBy('first_name');
@@ -42,23 +41,21 @@ Route::prefix('/userdata')->group(function () {
         $model->id_number = 423239862714;
         $model->save();
     });
+});
 
-    Route::get('/updatedata', function () {
-        User::query()->where('first_name', 'Sule')->update(['last_name' => 'kosova']);
-    });
-    Route::get('/deletedata', function () {
-        User::query()->find(1)->delete();
+Route::middleware('cors')->group(function () {
+    Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
-    });
+    Route::get('/getPlacesQueries/{places_id}', [BarcodeQueryController::class, 'getPlacesQueries']);
+
+    Route::post('/register', [AuthController::class, 'register']);
+    Route::post('/login', [AuthController::class, 'login']);
 });
 
 
-Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
-
-
-
-
-Route::get('/id/{id_number}', function ($id_number) {
-    return User::query()->where('id_number', $id_number)->
-    first(['first_name', 'id_number', 'last_name', 'user_photo_path']);
+Route::middleware('auth:sanctum')->group(function () {
+    Route::post('/logout', [AuthController::class, 'logout']);
+    Route::get('/me', [AuthController::class, 'me']);
+    Route::get('/role', [AuthController::class, 'role']);
+    Route::get('/getQueries', [BarcodeQueryController::class, 'getAdminPlaceQueries']);
 });

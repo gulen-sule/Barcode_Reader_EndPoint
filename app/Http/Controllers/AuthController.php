@@ -6,6 +6,7 @@ use App\Models\BarcodeToken;
 use App\Models\User;
 use App\Traits\ApiResponser;
 use Faker\Provider\Uuid;
+use http\Env\Response;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -59,6 +60,7 @@ class AuthController extends Controller
 
     public function login(Request $request): JsonResponse
     {
+        echo $request->ip();
         if (!Auth::attempt($request->only('email', 'password'), true)) {
             return \response()->json(['message' => 'Invalid login details'], 401);
         }
